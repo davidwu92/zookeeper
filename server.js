@@ -4,6 +4,7 @@ const app = express()
 
 const {animals} = require('./data/animals.json')
 
+const PORT = process.env.PORT || 3001
 // EXAMPLE DATA OBJECT = {
 //   "id": "0",
 //   "name": "Spindle",
@@ -65,8 +66,8 @@ app.get('/api/animals', (req, res) => {
 
 
 
-app.listen(3001, ()=>{
-  console.log('Server listening on port 3001')
+app.listen(PORT, ()=>{
+  console.log(`Server listening on ${PORT}`)
 })
 //websites have addresses: like address of a college campus.
 //ports tell exactly where to go: building, classroom # on campus.
