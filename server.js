@@ -35,6 +35,9 @@ const filterByQuery = (query, animalsArray)=>{
     })
   }
   
+  if(query.id){
+    filteredResults = filteredResults.filter(animal=>animal.id === query.id)
+  }
   if(query.diet){
     filteredResults = filteredResults.filter(animal=>animal.diet === query.diet)
   }
@@ -47,7 +50,13 @@ const filterByQuery = (query, animalsArray)=>{
   return filteredResults
 }
 
-
+app.get('/', (req, res)=>{
+  res.send(`
+  Please specify route: /api/animals for animal database.
+  Add queries to search for animals by id, name, personalityTraits, species, or diet.
+  i.e. "/api/animals?name=Erica"
+  `)
+})
 app.get('/api/animals', (req, res) => {
   let results = animals
   console.log(req.query)
