@@ -34,10 +34,6 @@ const filterByQuery = (query, animalsArray)=>{
       filteredResults = filteredResults.filter(animal=>animal.personalityTraits.indexOf(trait)!==-1)
     })
   }
-  
-  if(query.id){
-    filteredResults = filteredResults.filter(animal=>animal.id === query.id)
-  }
   if(query.diet){
     filteredResults = filteredResults.filter(animal=>animal.diet === query.diet)
   }
@@ -50,13 +46,20 @@ const filterByQuery = (query, animalsArray)=>{
   return filteredResults
 }
 
+const findById = (id, animalsArray)=>{
+  let result = animalsArray.filter(animal=>animal.id===id)[0]
+  return result
+}
+
 app.get('/', (req, res)=>{
   res.send(`
-  Please specify route: /api/animals for animal database.
-  Add queries to search for animals by id, name, personalityTraits, species, or diet.
+  Please specify route: /api/animals for entire animal database.
+  To search for a specific animal by id, use route: /api/animals/id
+  Add queries to search for animals by name, personalityTraits, species, or diet.
   i.e. "/api/animals?name=Erica"
   `)
 })
+
 app.get('/api/animals', (req, res) => {
   let results = animals
   console.log(req.query)
@@ -73,7 +76,11 @@ app.get('/api/animals', (req, res) => {
   res.json(results)
 });
 
-
+//this param route must come after the other route.
+app.get('/api/animals/:id', (req, res)=>{
+  let result = findById(req.params.id, animals)
+  result?res.json(result):res.send(404)
+})
 
 app.listen(PORT, ()=>{
   console.log(`Server listening on ${PORT}`)
